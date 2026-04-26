@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intro</title>
+
+<style>
+@keyframes fadeUp{
+0%{opacity:0;transform:translateY(30px);}
+100%{opacity:1;transform:translateY(0);}
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="phone" style="
+background:linear-gradient(180deg,#eef8f0,#f8fbff);
+min-height:100vh;">
+
+<!-- TOP HEADER -->
+<div style="
+padding:30px 20px 34px;
+background:linear-gradient(135deg,#2ea44f,#53c96b);
+border-bottom-left-radius:34px;
+border-bottom-right-radius:34px;
+color:white;
+box-shadow:0 12px 30px rgba(46,164,79,.22);
+animation:fadeUp .7s ease;">
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;">
+
+<div style="
+font-size:28px;
+font-weight:700;">
+
+🌿 E-Crop
+
+</div>
+
+<div onclick="goLang()" style="
+background:rgba(255,255,255,.18);
+padding:10px 14px;
+border-radius:18px;
+cursor:pointer;
+font-size:14px;">
+
+🌍 Language
+
+</div>
+
+</div>
+
+<div style="
+margin-top:28px;
+font-size:34px;
+font-weight:700;
+line-height:1.25;">
+
+Smart Farming<br>
+Starts Here
+
+</div>
+
+<div style="
+margin-top:12px;
+font-size:15px;
+opacity:.95;
+line-height:1.6;">
+
+AI-powered crop disease detection,
+treatment guidance, and smarter farming tools.
+
+</div>
+
+</div>
+
+<!-- CONTENT -->
+<div style="padding:18px;">
+
+<!-- SLIDER CARD -->
+<div style="
+background:white;
+border-radius:30px;
+padding:20px;
+box-shadow:0 12px 30px rgba(0,0,0,.08);
+overflow:hidden;">
+
+<div id="slideWrap">
+
+<!-- Slide Content -->
+<div style="
+text-align:center;">
+
+<div id="icon"
+style="font-size:64px;">
+
+📷
+
+</div>
+
+<div id="title"
+style="
+font-size:26px;
+font-weight:700;
+margin-top:14px;">
+
+Instant Scan
+
+</div>
+
+<div id="desc"
+style="
+font-size:14px;
+color:#666;
+line-height:1.6;
+margin-top:10px;">
+
+Take a leaf photo and get disease detection in seconds.
+
+</div>
+
+</div>
+
+</div>
+
+<!-- DOTS -->
+<div style="
+text-align:center;
+margin-top:18px;
+font-size:14px;
+letter-spacing:4px;">
+
+<span id="dot1">●</span>
+<span id="dot2">○</span>
+<span id="dot3">○</span>
+<span id="dot4">○</span>
+
+</div>
+
+</div>
+
+<!-- BUTTONS -->
+<div style="
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+margin-top:20px;">
+
+<button class="btn"
+style="
+background:white;
+color:#2ea44f;
+border:2px solid #2ea44f;"
+onclick="goLogin()">
+
+Login
+
+</button>
+
+<button class="btn"
+style="
+background:#2ea44f;"
+onclick="goNext()">
+
+Get Started
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const slides = [
+
+{
+icon:"📷",
+title:"Instant Scan",
+desc:"Take a leaf photo and get disease detection in seconds."
+},
+
+{
+icon:"💊",
+title:"Treatment Guide",
+desc:"Get remedies, fertilizer help, and crop recovery tips."
+},
+
+{
+icon:"🌦️",
+title:"Weather Smart",
+desc:"Use local weather updates for better farming decisions."
+},
+
+{
+icon:"📊",
+title:"Farm Reports",
+desc:"Track scans, crop health, and improvement over time."
+}
+
+];
+
+let i = 0;
+
+function showSlide(){
+
+document.getElementById("icon").innerText =
+slides[i].icon;
+
+document.getElementById("title").innerText =
+slides[i].title;
+
+document.getElementById("desc").innerText =
+slides[i].desc;
+
+/* dots */
+for(let d=1; d<=4; d++){
+document.getElementById("dot"+d).innerText="○";
+}
+
+document.getElementById("dot"+(i+1)).innerText="●";
+
+}
+
+setInterval(()=>{
+
+i++;
+if(i>3) i=0;
+showSlide();
+
+},2500);
+
+function goLang(){
+location.href="/language";
+}
+
+function goLogin(){
+location.href="/login";
+}
+
+function goNext(){
+location.href="/login";
+}
+
+</script>
+
+</body>
+</html>

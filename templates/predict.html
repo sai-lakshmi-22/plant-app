@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Crop Scan</title>
+<link rel="stylesheet" href="/static/style.css">
+
+<style>
+body{
+margin:0;
+padding:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#eef6ef;
+}
+
+.page{
+max-width:430px;
+margin:auto;
+min-height:100vh;
+background:#eef6ef;
+}
+
+.top{
+background:linear-gradient(135deg,#27ae60,#57d67a);
+padding:22px 18px 28px;
+color:#fff;
+border-bottom-left-radius:28px;
+border-bottom-right-radius:28px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:26px;
+}
+
+.title{
+font-size:24px;
+font-weight:700;
+margin-top:14px;
+}
+
+.sub{
+font-size:14px;
+opacity:.95;
+margin-top:6px;
+line-height:1.5;
+}
+
+.card{
+background:#fff;
+margin:18px;
+padding:18px;
+border-radius:28px;
+box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+
+.preview{
+height:360px;
+border:2px dashed #c7dfcb;
+border-radius:24px;
+overflow:hidden;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#f8fff8;
+position:relative;
+}
+
+.preview img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:none;
+}
+
+.placeholder{
+text-align:center;
+color:#6d7f6f;
+font-size:18px;
+}
+
+.placeholder .icon{
+font-size:56px;
+margin-bottom:10px;
+}
+
+.actions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+margin-top:18px;
+}
+
+.btn{
+border:none;
+padding:16px;
+border-radius:20px;
+font-size:16px;
+font-weight:700;
+color:#fff;
+cursor:pointer;
+}
+
+.green{background:#2faa4a;}
+.blue{background:#2f59f0;}
+
+.result-title{
+font-size:22px;
+font-weight:700;
+margin-bottom:16px;
+}
+
+.result-box{
+line-height:1.7;
+font-size:18px;
+}
+
+.bar-wrap{
+height:12px;
+background:#e6ece7;
+border-radius:30px;
+margin-top:18px;
+overflow:hidden;
+}
+
+.bar{
+height:100%;
+width:0%;
+background:#32b458;
+transition:.4s;
+}
+
+.small{
+font-size:14px;
+color:#666;
+margin-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="top">
+
+<div class="topbar">
+<div onclick="goHome()" style="cursor:pointer;">←</div>
+<div>⚡</div>
+</div>
+
+<div class="title">AI Crop Scan</div>
+
+<div class="sub">
+Capture a crop leaf image for instant diagnosis
+</div>
+
+</div>
+
+<!-- CAMERA CARD -->
+<div class="card">
+
+<div class="preview">
+
+<div id="placeholder" class="placeholder">
+<div class="icon">📷</div>
+Select crop image
+</div>
+
+<img id="previewImg">
+
+</div>
+
+<input
+type="file"
+id="fileInput"
+accept="image/*"
+capture="environment"
+style="display:none;">
+
+<div class="actions">
+
+<button class="btn green"
+onclick="openCamera()">
+
+📷 Camera
+
+</button>
+
+<button class="btn blue"
+onclick="uploadImage()">
+
+🔍 Analyze
+
+</button>
+
+</div>
+
+</div>
+
+<!-- RESULT -->
+<div class="card" id="resultCard" style="display:none;">
+
+<div class="result-title">
+Diagnosis Result
+</div>
+
+<div id="resultText" class="result-box"></div>
+
+<div class="bar-wrap">
+<div class="bar" id="bar"></div>
+</div>
+
+<div class="small" id="langUsed"></div>
+
+</div>
+
+</div>
+
+<script>
+function goHome(){
+location.href="/home";
+}
+
+const fileInput=document.getElementById("fileInput");
+const previewImg=document.getElementById("previewImg");
+const placeholder=document.getElementById("placeholder");
+const resultCard=document.getElementById("resultCard");
+const resultText=document.getElementById("resultText");
+const bar=document.getElementById("bar");
+const langUsed=document.getElementById("langUsed");
+
+/* mobile detect */
+function isMobile(){
+return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+
+/* open camera */
+function openCamera(){
+fileInput.click();
+}
+
+/* preview */
+fileInput.addEventListener("change",function(){
+
+if(this.files.length){
+
+const file=this.files[0];
+
+previewImg.src=URL.createObjectURL(file);
+previewImg.style.display="block";
+placeholder.style.display="none";
+
+resultCard.style.display="none";
+
+}
+
+});
+
+/* upload */
+async function uploadImage(){
+
+if(!fileInput.files.length){
+alert("Please choose image first");
+return;
+}
+
+const formData=new FormData();
+
+formData.append(
+"image",
+fileInput.files[0]
+);
+
+const lang=
+localStorage.getItem("lang") || "English";
+
+formData.append(
+"lang",
+lang
+);
+
+resultCard.style.display="block";
+
+resultText.innerHTML=
+"⏳ Analyzing image...";
+
+bar.style.width="25%";
+
+langUsed.innerHTML="";
+
+try{
+
+const res=await fetch("/predict",{
+method:"POST",
+body:formData
+});
+
+const data=await res.json();
+
+if(data.success){
+
+resultText.innerHTML=
+
+"🌿 <b>" +
+data.prediction +
+"</b><br><br>" +
+
+"Confidence: " +
+data.confidence +
+"%<br><br>" +
+
+"💊 <b>Treatment:</b><br>" +
+(data.treatment ||
+"No treatment available");
+
+bar.style.width=
+data.confidence + "%";
+
+langUsed.innerHTML=
+"Language: " + lang;
+
+}else{
+
+resultText.innerHTML=
+"❌ Prediction failed";
+
+bar.style.width="0%";
+
+}
+
+}catch(e){
+
+resultText.innerHTML=
+"❌ Server error";
+
+bar.style.width="0%";
+
+}
+
+}
+</script>
+
+</body>
+</html>

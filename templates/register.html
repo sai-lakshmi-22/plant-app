@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register</title>
+</head>
+
+<body>
+
+<div class="phone" style="
+background:linear-gradient(180deg,#eef8f0,#f8fbff);
+min-height:100vh;">
+
+<!-- HEADER -->
+<div style="
+padding:38px 22px 34px;
+background:linear-gradient(135deg,#2ea44f,#53c96b);
+border-bottom-left-radius:34px;
+border-bottom-right-radius:34px;
+color:white;">
+
+<div style="
+font-size:56px;
+text-align:center;">
+
+🌱
+
+</div>
+
+<div style="
+text-align:center;
+font-size:32px;
+font-weight:700;
+margin-top:10px;">
+
+Create Account
+
+</div>
+
+<div style="
+text-align:center;
+margin-top:8px;
+font-size:14px;
+opacity:.92;">
+
+Join Smart Farming Today
+
+</div>
+
+</div>
+
+<!-- CONTENT -->
+<div style="padding:18px;">
+
+<div class="card" style="
+margin-top:-24px;">
+
+<!-- FLASH -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div style="
+background:#fff2d8;
+color:#8a5a00;
+padding:12px;
+border-radius:14px;
+margin-bottom:14px;
+font-size:14px;">
+
+{{ messages[0] }}
+
+</div>
+{% endif %}
+{% endwith %}
+
+<!-- TABS -->
+<div style="
+display:grid;
+grid-template-columns:1fr 1fr;
+background:#f3f6f4;
+padding:5px;
+border-radius:18px;">
+
+<div onclick="goLogin()" style="
+padding:12px;
+text-align:center;
+font-weight:700;
+cursor:pointer;
+color:#666;">
+
+Login
+
+</div>
+
+<div style="
+background:#2ea44f;
+color:white;
+padding:12px;
+text-align:center;
+border-radius:14px;
+font-weight:700;">
+
+Register
+
+</div>
+
+</div>
+
+<!-- FORM -->
+<form method="POST" style="
+margin-top:20px;">
+
+<input
+type="text"
+name="name"
+placeholder="Full Name"
+class="input"
+required>
+
+<input
+type="email"
+name="email"
+placeholder="Email"
+class="input"
+required>
+
+<input
+type="text"
+name="mobile"
+placeholder="Mobile Number"
+class="input"
+required>
+
+<input
+type="password"
+name="password"
+placeholder="Password"
+class="input"
+required>
+
+<button
+type="submit"
+class="btn"
+style="
+width:100%;
+background:#2ea44f;">
+
+Create Account
+
+</button>
+
+</form>
+
+<div style="
+text-align:center;
+font-size:13px;
+color:#777;
+margin-top:16px;
+line-height:1.5;">
+
+By creating account you agree to our
+Terms & Privacy Policy
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div style="
+text-align:center;
+font-size:13px;
+color:#666;
+margin-top:10px;">
+
+© E-Crop Diagnosis
+
+</div>
+
+</div>
+
+<script>
+
+function goLogin(){
+location.href="/login";
+}
+
+</script>
+
+</body>
+</html>

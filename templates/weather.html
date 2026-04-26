@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Weather</title>
+<link rel="stylesheet" href="/static/style.css">
+
+<style>
+body{
+margin:0;
+padding:0;
+font-family:Arial,Helvetica,sans-serif;
+background:linear-gradient(180deg,#eef8f0,#f8fbff);
+}
+
+.page{
+max-width:430px;
+margin:auto;
+min-height:100vh;
+padding-bottom:30px;
+}
+
+.top{
+background:linear-gradient(135deg,#2ea44f,#53c96b);
+padding:24px 18px 30px;
+color:#fff;
+border-bottom-left-radius:30px;
+border-bottom-right-radius:30px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:26px;
+}
+
+.title{
+font-size:28px;
+font-weight:700;
+margin-top:14px;
+}
+
+.sub{
+font-size:14px;
+opacity:.95;
+margin-top:6px;
+}
+
+.card{
+background:#fff;
+margin:18px;
+padding:20px;
+border-radius:28px;
+box-shadow:0 12px 30px rgba(0,0,0,.07);
+text-align:center;
+}
+
+.searchrow{
+display:flex;
+gap:10px;
+margin-bottom:16px;
+}
+
+.search{
+flex:1;
+padding:14px;
+border-radius:18px;
+border:1px solid #dce7de;
+font-size:15px;
+outline:none;
+box-sizing:border-box;
+}
+
+.go{
+border:none;
+padding:0 18px;
+border-radius:18px;
+background:#2ea44f;
+color:#fff;
+font-weight:700;
+cursor:pointer;
+}
+
+.iconbig{
+font-size:64px;
+}
+
+.temp{
+font-size:54px;
+font-weight:700;
+color:#2ea44f;
+margin-top:8px;
+}
+
+.city{
+font-size:24px;
+font-weight:700;
+margin-top:8px;
+}
+
+.small{
+font-size:14px;
+color:#666;
+margin-top:8px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+margin-top:18px;
+}
+
+.box{
+background:#f8fbf8;
+padding:14px;
+border-radius:20px;
+font-size:14px;
+}
+
+.icon{
+font-size:28px;
+margin-bottom:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+<!-- HEADER -->
+<div class="top">
+
+<div class="topbar">
+
+<div onclick="location.href='/home'"
+style="cursor:pointer;">
+←
+</div>
+
+<div>🌦️</div>
+
+</div>
+
+<div class="title">
+Live Weather
+</div>
+
+<div class="sub">
+{{ username }} farming weather updates
+</div>
+
+</div>
+
+<!-- CARD -->
+<div class="card">
+
+<form method="get" action="/weather">
+
+<div class="searchrow">
+
+<input
+type="text"
+name="city"
+class="search"
+placeholder="Enter city name"
+value="{{ city }}">
+
+<button
+type="submit"
+class="go">
+
+Go
+
+</button>
+
+</div>
+
+</form>
+
+<div class="iconbig">☀️</div>
+
+<div class="temp">
+{{ temp }}°C
+</div>
+
+<div class="city">
+{{ city }}
+</div>
+
+<div class="small">
+{{ condition }}
+</div>
+
+<div class="grid">
+
+<div class="box">
+<div class="icon">💧</div>
+Humidity<br><b>{{ humidity }}%</b>
+</div>
+
+<div class="box">
+<div class="icon">🌬️</div>
+Wind<br><b>{{ wind }} km/h</b>
+</div>
+
+<div class="box">
+<div class="icon">🌦️</div>
+Condition<br><b>{{ condition }}</b>
+</div>
+
+<div class="box">
+<div class="icon">🌱</div>
+Tip<br><b>Check soil moisture</b>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
