@@ -25,7 +25,7 @@ import os
 import requests
 
 app = Flask(__name__)
-app.secret_key = "ecrop_secret_key"
+app.secret_key = os.getenv("SECRET_KEY", "fallback_key")
 
 # DATABASE
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
