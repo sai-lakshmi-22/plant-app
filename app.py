@@ -49,7 +49,7 @@ class History(db.Model):
     created = db.Column(db.DateTime, default=db.func.now())
 
 # MODEL
-MODEL_PATH = "model/fixed_plant_model.h5"
+MODEL_PATH = "model/plant_model.keras"
 LABEL_PATH = "model/labels.json"
 
 model = load_model(MODEL_PATH, compile=False)
