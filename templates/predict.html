@@ -224,7 +224,7 @@ Diagnosis Result
 
 <script>
 function goHome(){
-location.href="/home";
+location.href="/";
 }
 
 const fileInput=document.getElementById("fileInput");
@@ -303,35 +303,29 @@ body:formData
 
 const data=await res.json();
 
-if(data.success){
+if(data.status === "success"){
 
-resultText.innerHTML=
+resultText.innerHTML =
 
 "🌿 <b>" +
-data.prediction +
+data.disease +
 "</b><br><br>" +
 
 "Confidence: " +
 data.confidence +
-"%<br><br>" +
+"<br><br>" +
 
 "💊 <b>Treatment:</b><br>" +
-(data.treatment ||
-"No treatment available");
+(data.treatment || "No treatment available");
 
-bar.style.width=
-data.confidence + "%";
+bar.style.width = data.confidence;
 
-langUsed.innerHTML=
+langUsed.innerHTML =
 "Language: " + lang;
 
 }else{
-
-resultText.innerHTML=
-"❌ Prediction failed";
-
+resultText.innerHTML="❌ Prediction failed";
 bar.style.width="0%";
-
 }
 
 }catch(e){
