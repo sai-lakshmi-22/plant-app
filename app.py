@@ -6,10 +6,9 @@ from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
 # ==================================================
-# APP CONFIG
+# APP SETUP
 # ==================================================
 app = Flask(__name__)
-
 app.secret_key = os.getenv("SECRET_KEY", "fallback_key")
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -20,7 +19,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 # ==================================================
-# MODEL + LABELS PATH
+# PATHS
 # ==================================================
 MODEL_PATH = "model/plant_model.keras"
 LABELS_PATH = "model/labels.json"
@@ -38,7 +37,7 @@ except Exception as e:
     print("Labels load failed:", e)
 
 # ==================================================
-# SAFE LAZY MODEL LOADING
+# SAFE MODEL LOADING
 # ==================================================
 model = None
 
@@ -49,8 +48,7 @@ def get_model():
         try:
             from tensorflow.keras.models import load_model
             model = load_model(MODEL_PATH, compile=False)
-            print("Model loaded successfully:", MODEL_PATH)
-
+            print("Model loaded successfully")
         except Exception as e:
             print("Model load failed:", e)
             model = None
@@ -69,14 +67,59 @@ with app.app_context():
     db.create_all()
 
 # ==================================================
-# HOME PAGE
+# PAGE ROUTES
 # ==================================================
 @app.route("/")
 def home():
     return render_template("home.html")
 
+@app.route("/index")
+def index():
+    return render_template("index.html")
+
+@app.route("/intro")
+def intro():
+    return render_template("intro.html")
+
+@app.route("/language")
+def language():
+    return render_template("language.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
+@app.route("/predict-page")
+def predict_page():
+    return render_template("predict.html")
+
+@app.route("/reports")
+def reports():
+    data = Report.query.order_by(Report.id.desc()).all()
+    return render_template("reports.html", reports=data)
+
+@app.route("/history")
+def history():
+    return render_template("history.html")
+
+@app.route("/treatment")
+def treatment():
+    return render_template("treatment.html")
+
+@app.route("/weather")
+def weather():
+    return render_template("weather.html")
+
+@app.route("/splash")
+def splash():
+    return render_template("splash.html")
+
 # ==================================================
-# PREDICT PAGE
+# AI PREDICTION ROUTE
 # ==================================================
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -86,7 +129,7 @@ def predict():
     if mdl is None:
         return jsonify({
             "status": "error",
-            "message": "AI model failed to load on server"
+            "message": "Model failed to load on server"
         })
 
     try:
@@ -124,14 +167,6 @@ def predict():
             "status": "error",
             "message": str(e)
         })
-
-# ==================================================
-# REPORTS PAGE
-# ==================================================
-@app.route("/reports")
-def reports():
-    data = Report.query.order_by(Report.id.desc()).all()
-    return render_template("reports.html", reports=data)
 
 # ==================================================
 # HEALTH CHECK
